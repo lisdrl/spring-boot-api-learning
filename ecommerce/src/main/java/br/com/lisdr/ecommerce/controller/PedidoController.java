@@ -2,6 +2,8 @@ package br.com.lisdr.ecommerce.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.lisdr.ecommerce.dao.ClienteDAO;
 import br.com.lisdr.ecommerce.dao.PedidoDAO;
 import br.com.lisdr.ecommerce.dto.PedidoDTO;
+import br.com.lisdr.ecommerce.exception.custom.BadRequestException;
 import br.com.lisdr.ecommerce.form.PedidoForm;
 import br.com.lisdr.ecommerce.model.Cliente;
 import br.com.lisdr.ecommerce.model.Pedido;
@@ -29,7 +32,7 @@ public class PedidoController {
 	ClienteDAO clienteDAO;
 	
 	@PostMapping
-	public ResponseEntity<?> cadastrar(@RequestBody PedidoForm pedidoForm, UriComponentsBuilder uriBuilder){
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid PedidoForm pedidoForm, UriComponentsBuilder uriBuilder){
 		Cliente cliente = clienteDAO.findByNome(pedidoForm.getNomeDoCliente());
 		if (cliente != null) {
 			Pedido pedido = pedidoForm.converterEmPedido(cliente);
@@ -37,6 +40,7 @@ public class PedidoController {
 			URI uri = uriBuilder.path("/{id}").buildAndExpand(pedido.getId()).toUri();
 			return ResponseEntity.created(uri).body(new PedidoDTO(pedido));			
 		}
-		return ResponseEntity.badRequest().body(new NotFoundMessage(Cliente.getClassName()));
+		NotFoundMessage message = new NotFoundMessage(Cliente.getClassName());
+		throw new BadRequestException(message.getMessage());
 	}
 }

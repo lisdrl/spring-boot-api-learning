@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import br.com.lisdr.ecommerce.dao.ProdutoDAO;
 import br.com.lisdr.ecommerce.model.Produto;
 
-public class UpdateProductForm {
+public class UpdateProdutoForm {
 	@NotNull
 	@NotEmpty
 	private String nome;
@@ -25,7 +25,7 @@ public class UpdateProductForm {
 	@DecimalMin(value = "0")
 	private Double preco;
 
-	public UpdateProductForm(String nome, Integer quantidade, String descricao, Double preco) {
+	public UpdateProdutoForm(String nome, Integer quantidade, String descricao, Double preco) {
 		this.nome = nome;
 		this.quantidade = quantidade;
 		this.descricao = descricao;

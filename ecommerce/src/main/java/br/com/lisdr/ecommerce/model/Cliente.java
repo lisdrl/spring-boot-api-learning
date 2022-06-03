@@ -20,10 +20,10 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "nome_cliente")
+	@Column(name = "nome_cliente", nullable = false)
 	private String nome;
 	
-	@Column(name="email", unique = true)
+	@Column(name="email_cliente", nullable = false, unique = true)
 	private String email;
 	
 	@OneToMany(mappedBy = "cliente")

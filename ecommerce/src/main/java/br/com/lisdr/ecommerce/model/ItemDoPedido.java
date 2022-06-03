@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "produto_pedido")
+@Table(name = "pedido_produto")
 public class ItemDoPedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

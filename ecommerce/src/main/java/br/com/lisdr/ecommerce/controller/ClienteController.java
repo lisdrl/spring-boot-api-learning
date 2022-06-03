@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+
 import br.com.lisdr.ecommerce.dao.ClienteDAO;
 import br.com.lisdr.ecommerce.dto.ClienteDTO;
+import br.com.lisdr.ecommerce.exception.custom.BadRequestException;
 import br.com.lisdr.ecommerce.form.ClienteForm;
 import br.com.lisdr.ecommerce.model.Cliente;
 import br.com.lisdr.ecommerce.util.NotFoundMessage;
@@ -53,13 +57,13 @@ public class ClienteController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<ClienteDTO> cadastrar(@RequestBody @Valid ClienteForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid ClienteForm form, UriComponentsBuilder uriBuilder) {
 		if (clienteDAO.findByEmail(form.getEmail()) == null) {
 			Cliente cliente = form.converterParaCliente();
 			cliente = clienteDAO.save(cliente);
 			URI uri = uriBuilder.path("/clientes/{id}").buildAndExpand(cliente.getId()).toUri();
 			return ResponseEntity.created(uri).body(new ClienteDTO(cliente));
 		}
-		return ResponseEntity.badRequest().build();
+		throw new BadRequestException("E-mail já cadastrado");
 	}
 }

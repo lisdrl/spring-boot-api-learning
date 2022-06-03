@@ -1,9 +1,15 @@
 package br.com.lisdr.ecommerce.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import br.com.lisdr.ecommerce.model.Cliente;
 
 public class ClienteForm {
+	@NotEmpty @NotNull
 	private String nome;
+	
+	@NotEmpty @NotNull
 	private String email;
 	
 	public ClienteForm(String nome, String email) {

@@ -4,7 +4,7 @@ public class NotFoundMessage {
 	private String message;
 	
 	public NotFoundMessage(String classname) {
-		this.message = "Entity " + classname + " not found.";
+		this.message = "Entity " + classname + " not found";
 	}
 	
 	public String getMessage() {
